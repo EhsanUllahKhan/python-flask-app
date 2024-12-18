@@ -2,7 +2,7 @@
 FROM python:3.11-alpine
 
 # Set work directory
-WORKDIR /app
+WORKDIR /python-flask-app
 
 # Install dependencies
 COPY requirements.txt .
