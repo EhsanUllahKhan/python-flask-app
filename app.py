@@ -1,15 +1,12 @@
-# app.py
-from flask import Flask, jsonify
+from flask import Flask
+import logging
 
 app = Flask(__name__)
 
-@app.route('/api/hello', methods=['GET'])
+@app.route('/')
 def hello_world():
-    return jsonify({"message": "Hello, World!"})
-
-@app.route('/api/status', methods=['GET'])
-def status():
-    return jsonify({"status": "Running", "version": "1.0.0"})
+    logging.warning("hello world log message")
+    return 'Hello World'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

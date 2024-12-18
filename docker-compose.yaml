@@ -1,0 +1,13 @@
+services:
+  flask-app:
+#    image: ehsanullahkhan/fastapi-helloworld:signoz-test
+    container_name: flask-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "/python-flask-app/bin/run_app.sh" ]
+    environment:
+      - FLASK_ENV=production
+    volumes:
+      - .:/python-flask-app
+    restart: unless-stopped
