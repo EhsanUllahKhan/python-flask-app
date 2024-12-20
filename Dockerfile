@@ -1,18 +1,21 @@
-# Use the official Python image from Docker Hub
-FROM python:3.9-slim
+# Use a lightweight base image
+FROM python:3.11-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy requirements file and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy only the requirements file to leverage Docker cache
+COPY requirements.txt ./
 
-# Copy the Flask app code into the container
-COPY app.py .
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt \
+    && opentelemetry-bootstrap --action=install
 
-# Expose port 5000 for the Flask app
-EXPOSE 5000
+# Copy the rest of the application files
+COPY . .
 
-# Define the command to run the application
-CMD ["python", "app.py"]
+# Make sure the script is executable
+RUN chmod +x ./bin/run_app.sh
+
+# Default command (optional; overridden by docker-compose.yml)
+#CMD ["./bin/run_app.sh"]
