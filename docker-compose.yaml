@@ -1,13 +1,9 @@
 services:
   flask-app:
-#    image: ehsanullahkhan/fastapi-helloworld:signoz-test
-    container_name: flask-app
     build:
       context: .
       dockerfile: Dockerfile
-    command: [ "/python-flask-app/bin/run_app.sh" ]
-    environment:
-      - FLASK_ENV=production
     volumes:
-      - .:/python-flask-app
-    restart: unless-stopped
+      - .:/app  # Bind the project directory to /app in the container
+    working_dir: /app  # Ensure the working directory is set correctly
+    entrypoint: ["./bin/run_app.sh"]  # Define the entry point
