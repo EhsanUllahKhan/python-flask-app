@@ -1,9 +1,9 @@
-name: Build and Push Docker Image for vpcplus-ibm-be
+name: Build and Push Docker Image for Flask Sample application
 
 on:
   push:
     branches:
-      - otel-signoz-packages
+      - main
   workflow_dispatch:
 
 jobs:

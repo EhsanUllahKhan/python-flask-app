@@ -21,4 +21,4 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
-        command: [ "/python-flask-app/bin/run_app.sh" ]
+        command: [ "./bin/run_app.sh" ]
