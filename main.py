@@ -8,10 +8,10 @@ def warning():
     logging.warning("Warning message")
     return 'Warning message'
 
-@app.route('/info')
+@app.route('/api')
 def info():
-    logging.info("Info log message")
-    return 'Info log message'
+    logging.info("API log message")
+    return 'API log message'
 
 @app.route('/error')
 def error():
