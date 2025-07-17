@@ -3,12 +3,12 @@ import logging
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/warning')
 def warning():
     logging.warning("Warning message")
     return 'Warning message'
 
-@app.route('/api')
+@app.route('/')
 def info():
     logging.info("API log message")
     return 'API log message'
