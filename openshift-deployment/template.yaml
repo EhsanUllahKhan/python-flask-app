@@ -1,0 +1,73 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: ${APP_NAME}-template
+parameters:
+  - name: APP_NAME
+    description: Application name
+    required: true
+  - name: GIT_REPO
+    description: Git repository URL
+    required: true
+  - name: GIT_REF
+    description: Git branch or tag that will send push triggers
+    value: main
+  - name: CONTAINER_PORT
+    description: Port your application listens on
+    value: 5000
+  - name: GITHUB_WEBHOOK_SECRET
+    description: Secret that is used in github webook to automate the triggers "push event" on every commit in the branch
+    required: true
+  - name: GENERIC_WEBHOOK_SECRET
+    description: Generic webhook secret
+    value: abc123
+  - name: IMAGE_TAG
+    description: Image tag to use
+    value: latest
+  - name: CONTAINER_COMMAND
+    description: Optional container command (e.g. [./bin/run_app.sh])
+    required: false
+
+objects:
+  # image stream
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: ${APP_NAME}
+      labels:
+        app: ${APP_NAME}
+    spec:
+      lookupPolicy:
+        local: false
+
+  # buildconfig
+  - kind: BuildConfig
+    apiVersion: build.openshift.io/v1
+    metadata:
+      name: ${APP_NAME}
+    spec:
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${APP_NAME}:${IMAGE_TAG}
+      source:
+        type: Git
+        git:
+          uri: ${GIT_REPO}
+          ref: ${GIT_REF}
+      strategy:
+        type: Docker
+      triggers:
+        - type: GitHub
+          github:
+            secret: ${GITHUB_WEBHOOK_SECRET}
+        - type: Generic
+          generic:
+            secret: ${GENERIC_WEBHOOK_SECRET}
+        - type: ConfigChange
+        - type: ImageChange
+
+  # deployment
+
+
+
